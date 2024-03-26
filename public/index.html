@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Souvik Nayak - Decision Science Consultant</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <audio id="voice-activation-sound" src="notifications-sound-127856.mp3" preload="auto"></audio>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f0f0;
+    }
+    /* Other styles... */
+    
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+    
+
+    header {
+      background: #385987;
+      color: #ffffff;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    .profile-section, .skills-section, .experience-section, .education-section {
+      background: #ffffff;
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .profile-img {
+      width: 150px; /* Adjust size as needed */
+      height: 150px; /* Adjust size as needed */
+      border-radius: 50%; /* Creates the circular shape */
+      margin-bottom: 20px; /* Space between the image and the name */
+    }
+
+    h2 {
+      color: #385987;
+    }
+
+    .skill-item {
+      display: inline-block;
+      background: #385987;
+      color: #ffffff;
+      padding: 5px 10px;
+      margin: 5px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+  #chat-container {
+    display: none; /* Initially hidden */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-radius: 15px; /* Added rounded corners */
+  }
+
+  #chat-header {
+    background-color: #385987;
+    color: #ffffff;
+    padding: 10px 20px; /* Updated padding for a little more space */
+    cursor: pointer;
+    border-top-left-radius: 15px; /* Match the chat container's top-left radius */
+    border-top-right-radius: 15px; /* Match the chat container's top-right radius */
+    font-size: 16px; /* Optional: Adjust font size as needed */
+    text-align: center; /* Ensure the text is centered */
+    box-shadow: none; /* Remove any shadow here if it was previously added */
+  }
+  .chat-icon {
+    width: 20px; /* Adjust as needed */
+    height: 20px; /* Adjust as needed */
+    border-radius: 50%; /* Makes the image round */
+    margin-right: 5px; /* Adds some spacing between the image and the text */
+  }
+
+    #messages {
+      height: calc(100% - 100px);
+      overflow-y: auto;
+      padding: 10px;
+      padding-bottom: 60px;
+    }
+    .message {
+      margin-bottom: 10px; /* Adjust the space between messages */
+      display: flex;
+      align-items: center;
+    }
+    .user-message, .bot-message {
+      margin-bottom: 10px; /* Adjust the spacing between messages */
+      padding: 5px; /* Add some padding around the message */
+    }
+
+    .user-message {
+      text-align: right; /* Align user messages to the right */
+  }
+
+    .bot-message {
+      text-align: left; /* Align bot messages to the left */
+    }
+
+    .message-content {
+      display: inline-block;
+      padding: 5px;
+      border-radius: 10px; /* Rounded corners for message */
+    }
+
+    /* You can also add some background color to the messages for better differentiation */
+    .user-message .message-content {
+      background-color: #daf1da; /* Light green background for user messages */
+    }
+
+    .bot-message .message-content {
+      background-color: #f1f1f1; /* Light grey background for bot messages */
+    }
+
+    .open-chat-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background-color: #385987;
+      color: #ffffff;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      z-index: 1000;
+    }
+    .project-detail {
+      margin-bottom: 20px; /* Adjust the space as needed */
+    }
+    /* Adjusted styles for menu button */
+    /* Style for the dynamically changing menu button */
+    .menu-btn {
+      font-size: 20px; /* Adjust button size to make it smaller */
+      cursor: pointer;
+      background-color: transparent;
+      color: white; /* Initial color set to white */
+      border: none;
+      position: fixed;
+      top: 20px;
+      left: 15px;
+      z-index: 5; /* Above the menu for accessibility */
+      transition: color 0.3s, transform 0.3s; /* Ensure smooth color transition */
+  }
+
+    /* New or adjusted styles */
+    /* Adjusted styles for the sliding menu */
+    .menu-bar {
+            position: fixed;
+            left: -250px; /* Initially off-screen */
+            top: 0;
+            width: 250px; /* Adjust as needed */
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
+            overflow-x: hidden; /* Hide horizontal overflow */
+            transition: 0.5s; /* Smooth transition for sliding effect */
+            padding-top: 60px; /* Space for menu content from the top */
+            z-index: 4; /* Ensure menu is above most content */
+        }
+    /* Style for menu button updated for dynamic changes */
+    #menuBtn {
+      transition: color 0.3s, transform 0.3s;
+    }
+    #menuBtn.open {
+      position: fixed;
+      transform: translateX(250px); /* Move button to the right */
+      color: black; /* Button text color when menu is open */
+    }
+
+    .menu-bar a {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 18px;
+      color: grey;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .menu-bar a:hover {
+      color: #385987; /* Change as needed */
+    }
+
+    /* Style adjustments when the menu is open */
+    .menu-btn.open {
+      background-color: black; /* Color when menu is open */
+      color: white;
+      left: 250px; /* Adjust based on the menu width */
+    }
+
+
+    .menu-bar .close-btn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+
+    .open-btn {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      font-size: 20px;
+      cursor: pointer;
+      background-color: #385987;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+    }
+
+    .section h2 {
+      font-size: 1.5em;
+      margin: 0;
+      padding: 20px;
+      background: #f9f9f9;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .section.squeezed h2 {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .section {
+      background: #ffffff;
+      margin-bottom: 20px;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: padding-top 0.3s ease-out;
+    }
+
+    h2 {
+      color: #385987;
+      margin-top: 0;
+    }
+
+    .section.squeezed h2 {
+      position: -webkit-sticky; /* Safari */
+      position: sticky;
+      top: 0;
+      background: #fff;
+      padding: 10px 20px;
+      margin-top: 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Styling for the chat input area */
+    #input-container {
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background-color: #fff;
+        box-sizing: border-box;
+        border-top: 1px solid #ccc; /* Add a subtle border to the top of the input area */
+    }
+
+    #user-input {
+        flex-grow: 1;
+        border-radius: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        margin-right: 8px; /* Ensure some space between input and button */
+    }
+
+    /* Custom styling for the Send button */
+    #send-btn {
+        background-color: #385987; /* Match the header color or choose your own */
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #send-btn:hover {
+        background-color: #2a4b70; /* Darken button on hover for feedback */
+    }
+
+    /* Microphone button styling */
+    #voice-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-right: 5px;
+        color: #385987; /* Match the header color or choose your own */
+        transition: color 0.3s ease;
+    }
+
+    #voice-btn:hover {
+        color: #2a4b70; /* Darken icon on hover for feedback */
+    }
+
+    /* Add FontAwesome icon styles if not already included */
+    .fas {
+        font-size: 20px;
+    }
+
+
+    /* Adjustments to fit the menu button */
+    .container, header {
+      margin-left: 0; /* Adjust as needed */
+    }
+  </style>
+</head>
+<body>
+  <!-- Menu Button -->
+  <button id="menuBtn" class="menu-btn" onclick="toggleNav()">☰</button>
+
+    <div id="menuBar" class="menu-bar">
+        <!-- Since we're handling the close functionality through the toggle, no need for a separate close button inside the menu -->
+        <a href="mailto:souvik.nayak@live.com">Email Souvik</a>
+        <a href="tel:+918777691171">Call Souvik</a>
+        <a href="Souvik_Nayak_AI_Engineer.pdf.pdf" target="_blank">Download Resume</a>
+        <a href="/upload-job-description" target="_blank">Upload Job Description</a>
+        <a href="/chat" target="_blank">Chat</a>
+        <a href="/help" target="_blank">Help</a>
+        <a href="/contact" target="_blank">Contact</a>
+    </div>
+
+  <header>
+    <img src="SOUVIK NATH NAYAK.jpg" alt="Souvik Nayak" class="profile-img"> <!-- Replace 'your-image-url.jpg' with your actual image path -->
+    <h1>Souvik Nayak</h1>
+    <p>Decision Science Consultant</p>
+  </header>
+
+  <div class="container">
+    <div class="section profile-section">
+      <h2>Profile</h2>
+      <ul>
+        <li>5 years experienced, meticulous & result oriented consultant in Data Engineering and Data Science domain. Expert armed with an analytical acumen in econometric modeling, algorithm development, data engineering & machine learning methodologies.</li>
+        <li>Possesses a proven track record of setting up the data science function for a leading oil & gas firm, in addition to rendering consultancy services for a Fortune 500 company.</li>
+        <li>Proficient in creating Big Data Engineering Pipeline using Azure Data Factory, Databricks, Azure Synapse Analytics, Azure ML Studio.</li>
+        <li>Proficient in deploying multiple algorithms and techniques like sentiment analysis, generative AI etc. to create products that deliver a direct impact on the bottom line of organizations.</li>
+      </ul>
+    </div>
+
+    <div class="skills-section">
+      <h2>Skills</h2>
+      <span class="skill-item">Generative AI</span>
+      <span class="skill-item">Azure</span>
+      <span class="skill-item">Python</span>
+      <span class="skill-item">SQL</span>
+      <span class="skill-item">Azure Data Factory</span>
+      <span class="skill-item">NLP</span>
+      <span class="skill-item">ML-Ops</span>
+      <span class="skill-item">Data Visualization</span>
+      <span class="skill-item">Analytics</span>
+      <span class="skill-item">Databricks</span>
+      <span class="skill-item">Tableau</span>
+      <!-- More skills can be added in a similar fashion -->
+    </div>
+
+    <div class="section experience-section">
+      <h2>Experience</h2>
+      
+      <div>
+        <strong>Ind&Func AI Decision Science Consultant (Nov 2021 - Present)</strong><br>
+        <em>Accenture Applied Intelligence, Bengaluru, India</em>
+        <ul>
+          <li class="project-detail">
+            <strong>PPA Advisor (Generative AI +Azure):</strong> Led the development of a power purchase agreement analysis system using Generative AI to parse terms and conditions, enhancing business value assessments across several PPAs. This project was highlighted as a significant achievement and showcased to Accenture's top management.
+            <br><strong>Techstack:</strong> Utilized Streamlit, Azure Open AI (Text-ada-002 & GPT 3.5 Turbo + Langchain), Docker, and Azure Container Apps.
+          </li>
+          <li class="project-detail">
+            <strong>HESS Chatbot/Knowledgebot:</strong> Implemented vector database embedding with Azure Redis Cache and integrated Azure Form Recognizer to analyze unstructured data effectively, enhancing the chatbot's functionality for HESS project.
+          </li>
+          <li class="project-detail">
+            <strong>POC for NG (Energy Supply Company):</strong> Developed a demo chatbot in a single day using Azure Cognitive Services and Generative AI, which led to securing a Statement of Work (SOW) due to its internal and client appreciation.
+          </li>
+          <li class="project-detail">
+            <strong>PVA Based Knowledgebot for DTE:</strong> Streamlined a knowledge bot solution utilizing Azure Open AI (GPT 3.5 Turbo 16K) and Form Recognizer, achieving significant response improvement through fine-tuning against legacy chatbot responses.
+          </li>
+          <li class="project-detail">
+            <strong>Labour-hour Prediction and Production Optimization with Azure:</strong> Engineered solutions for a Japanese tractor manufacturing company and a renowned paper company, applying data engineering pipelines and optimization algorithms that resulted in substantial cost savings and efficiency improvements.
+          </li>
+        </ul>
+      </div>
+    
+      <div>
+        <strong>Analyst (Jun 2019 - Nov 2021)</strong><br>
+        <em>Deloitte US India, Bengaluru, India</em>
+        <p>Clients: Deloitte Consulting, Deloitte Audit, Deloitte Tax<br>Industry: Internal/Shared Services</p>
+        <ul>
+          <li class="project-detail">Create, Delete and update database in Microsoft SQL Server as per the requirement.</li>
+          <li class="project-detail">Creating SQL Queries with window function, Grouping, Joins, Union, Window function etc.</li>
+          <li class="project-detail">Data Visualization & Business Intelligence (Used Tableau) Deploying rich graphical visualizations in dashboards to create effective views of data such as: Line Charts, Bar Charts, Pie Charts, Scatter Plots, Histograms, Tree Maps, Heat Maps, Area Charts, Gantt Charts, Bullet Graphs, Pareto Chart in Tableau Desktop.</li>
+          <li class="project-detail">Implementing advanced Tableau features such as parameters, table calculations, sets, groups, user filters to deliver highly usable dashboards.</li>
+          <li class="project-detail">Highlighting views by using Annotations (Points, Marks, Area, etc.) wherever required.</li>
+          <li class="project-detail">Creating different KPIs using calculated key figures and parameters.</li>
+          <li class="project-detail">Creating Tableau Dashboards with interactive views, trends and drill downs.</li>
+          <li class="project-detail">Implemented Topic Modeling with LDA Algorithm to identify top ideas for innovation network team.</li>
+          <li class="project-detail">Implemented Natural Language Processing (NLP) using lemmatization, stemming, tokenization to find top utterances.</li>
+          <li class="project-detail">Tested and implemented decision trees, random forests and ensemble models via bagging and boosting.</li>
+          <li class="project-detail">Data Management & Data Mining.</li>
+        </ul>
+      </div>
+      
+
+      <div>
+        <strong>Intern (Jan 2019 - June 2019)</strong><br>
+        <em>Deloitte US India, Bengaluru, India</em>
+        <ul>
+          <li class="project-detail">Built an NLP-based framework to help the technical team generate a weekly report of user issues and incidents.</li>
+          <li class="project-detail">Amalgamated data from various data sources and preprocessed it in Alteryx, enhancing data analysis and reporting capabilities.</li>
+          <li class="project-detail">Developed advanced Tableau dashboards incorporating visual analytics, parameterized filters, and calculated metrics to support business intelligence and decision-making processes.</li>
+          <li class="project-detail">Managed database operations, including creation, deletion, and updates in Microsoft SQL Server, ensuring data integrity and accessibility for various internal services.</li>
+          <li class="project-detail">Contributed to data mining and natural language processing projects, enhancing the team's capability to derive insights from complex datasets and unstructured data sources.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="education-section">
+      <h2>Education</h2>
+      <p><strong>PGP in Artificial Intelligence and Machine Learning, Jul 2020 - Apr 2021</strong><br>
+      NIT Warangal, Warangal - CGPA: 3.7 / 4</p>
+
+      <p><strong>MCA, Jul 2017 - Apr 2019</strong><br>
+      Vellore Institute of Technology Vellore, India - CGPA: 8.69 / 10</p>
+
+      <p><strong>BCA, Jun 2014 - Jun 2017</strong><br>
+      West Bengal University of Kolkata, India - CGPA: 7.94 / 10</p>
+    </div>
+  </div>
+
+
+  <button class="open-chat-btn" onclick="toggleChat()">Chat with Us!</button>
+
+  <div id="chat-container">
+    <div id="chat-header" onclick="toggleChat()">
+      Chat with Assistant <span style="float:right;">-</span>
+    </div>
+    <div id="messages"></div>
+    <div id="input-container" style="display: flex; align-items: center; padding: 5px;">
+      <!-- Microphone (voice input) button, now using FontAwesome -->
+      <button id="voice-btn" style="background: none; border: none; cursor: pointer; margin-right: 5px;">
+        <i class="fas fa-microphone" style="font-size: 20px; color: gray;"></i>
+      </button>
+      <!-- Text input field -->
+      <input type="text" id="user-input" placeholder="Type your message..." style="flex-grow: 1; border-radius: 20px; padding: 10px; border: 1px solid #ccc;">
+      <!-- Updated Send button -->
+      <button id="send-btn" onclick="sendMessage()" style="padding: 8px 15px; background-color: #4CAF50; color: white; border: none; border-radius: 20px; cursor: pointer; margin-left: 5px; transition: background-color 0.3s ease;">Send</button>
+    </div>
+</div>
+
+  <script>
+    // This function is called immediately to set the initial state.
+    (function initializeMenu() {
+        var menuBar = document.getElementById("menuBar");
+        var menuBtn = document.getElementById("menuBtn");
+        // Set initial state
+        menuBar.style.left = "-250px"; // Ensure the menu is initially hidden
+        menuBtn.innerHTML = "☰ Open Menu"; // Set initial button text
+    })();
+    document.addEventListener("DOMContentLoaded", function() {
+        const sections = document.querySelectorAll('.section');
+        let lastScrollY = window.scrollY;
+
+        function updateSections() {
+            const headerOffsets = Array.from(sections).map(section => {
+                return {
+                    section: section,
+                    offset: section.getBoundingClientRect().top
+                };
+            });
+
+            let cumulativeHeaderHeight = 0;
+            document.querySelectorAll('.section.squeezed h2').forEach(header => {
+                cumulativeHeaderHeight += header.offsetHeight;
+            });
+
+            headerOffsets.forEach((item, idx) => {
+                if (item.offset < cumulativeHeaderHeight && window.scrollY > lastScrollY) {
+                    item.section.classList.add('squeezed');
+                } else if (window.scrollY < lastScrollY && item.offset > (50 + cumulativeHeaderHeight)) {
+                    item.section.classList.remove('squeezed');
+                }
+            });
+
+            lastScrollY = window.scrollY;
+        }
+
+        window.addEventListener('scroll', updateSections);
+
+        if ('webkitSpeechRecognition' in window) {
+            const recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            document.getElementById('voice-btn').addEventListener('click', function() {
+                // Play the activation sound
+                document.getElementById('voice-activation-sound').play();
+
+                recognition.start();
+            });
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('user-input').value = transcript;
+                sendMessage();
+            };
+
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error', event.error);
+            };
+        } else {
+            alert('Your browser does not support speech recognition. Please try Google Chrome.');
+        }
+    });
+    function toggleNav() {
+      var menuBar = document.getElementById("menuBar");
+      var menuBtn = document.getElementById("menuBtn");
+
+      if (menuBar.style.left === "-250px") {
+        menuBar.style.left = "0"; // Show the menu
+        menuBtn.innerHTML = "× Close Menu"; // Change button text to Close Menu
+        menuBtn.style.color = "black"; // Change button text color to black
+      } else {
+        menuBar.style.left = "-250px"; // Hide the menu
+        menuBtn.innerHTML = "☰ Open Menu"; // Change button text back to Open Menu
+        menuBtn.style.color = "white"; // Change button text color back to white
+      }
+    }
+
+    function openNav() {
+      document.getElementById("menuBar").style.width = "250px"; /* Adjust width as needed */
+    }
+
+    function closeNav() {
+      document.getElementById("menuBar").style.width = "0";
+    }
+    function displayMessage(sender, message) {
+        const messagesContainer = document.getElementById('messages');
+        const messageDiv = document.createElement('div');
+        let senderImageHTML;
+
+        if (sender === 'You') {
+            // Replace 'user-icon.png' with the path to your user image
+            senderImageHTML = '<img src="user.png" alt="User" class="chat-icon"> ';
+            messageDiv.className = 'user-message'; // Apply user-message styling
+        } else {
+            // Replace 'bot-icon.png' with the path to your bot image
+            senderImageHTML = '<img src="bot_icon.png" alt="Bot" class="chat-icon"> ';
+            messageDiv.className = 'bot-message'; // Apply bot-message styling
+        }
+
+        const messageContentSpan = document.createElement('span');
+        messageContentSpan.className = 'message-content';
+        messageContentSpan.innerHTML = `${senderImageHTML}<span class="typing"></span>`;
+
+        messageDiv.appendChild(messageContentSpan);
+        messagesContainer.appendChild(messageDiv);
+
+        let i = 0;
+        const typingSpeed = 50;
+        const typingSpan = messageContentSpan.querySelector('.typing');
+
+        function typeOutMessage() {
+            if (i < message.length) {
+                typingSpan.innerHTML += message.charAt(i);
+                i++;
+                setTimeout(typeOutMessage, typingSpeed);
+            } else {
+                // Once finished, we could technically remove the 'typing' class if needed
+            }
+        }
+
+        typeOutMessage();
+        messagesContainer.scrollTop = messagesContainer.scrollHeight; // Auto-scroll to the latest message
+    }
+    async function sendMessage() {
+        const userInput = document.getElementById('user-input').value;
+        console.log('User Input:', userInput);
+
+        displayMessage('You', userInput);
+
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: userInput}),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to send message. Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            displayMessage('Bot', data.botReply);
+
+            // Check if an audioPath is provided and play the audio
+            if (data.audioPath) {
+                const audio = new Audio(data.audioPath); // Create a new audio element with the path
+                audio.onended = () => {
+                    console.log("Audio playback ended");
+                    // Call to delete the audio file only after playback has ended
+                    deleteAudioFile(data.audioPath);
+                };
+                audio.onerror = (e) => {
+                    console.error("Error playing audio:", e);
+                    // Attempt to delete the audio file even if playback fails
+                    deleteAudioFile(data.audioPath);
+                };
+                audio.play() // Attempt to play the audio
+                    .then(() => console.log("Audio playback started"))
+                    .catch(e => console.error("Error playing audio:", e));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+        document.getElementById('user-input').value = '';
+    }
+
+    function deleteAudioFile(audioFileName) {
+        fetch(`/delete-audio?file=${audioFileName}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    console.log(`Deleted audio file: ${audioFileName}`);
+                } else {
+                    console.error(`Failed to delete audio file: ${audioFileName}`);
+                }
+            })
+            .catch(error => console.error('Error deleting audio file:', error));
+    }
+    function toggleChat() {
+      const chatContainer = document.getElementById('chat-container');
+      chatContainer.style.display = chatContainer.style.display === 'none' || chatContainer.style.display === '' ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>
